@@ -31,37 +31,40 @@ set(BOOST_LIBS_REQUIRED
   # Header only libs
   header
 )
-set(BOOST_LIBS_OPTIONAL
-  # Compiled libs
-  atomic
-  chrono
-  container
-  context
-  coroutine
-  date_time
-  exception
-  fiber
-  filesystem
-  graph
-  iostreams
-  locale
-  log
-  math
-  mpi
-  graph_parallel # depends on mpi, so needs to be put after it
-  program_options
-  #python # complex module
-  random
-  regex
-  serialization
-  signals
-  system
-  test
-  thread
-  timer
-  type_erasure
-  wave
-)
+
+if(NOT DEFINED BOOST_LIBS_OPTIONAL)
+  set(BOOST_LIBS_OPTIONAL
+    # Compiled libs
+    atomic
+    chrono
+    container
+    context
+    coroutine
+    date_time
+    exception
+    fiber
+    filesystem
+    graph
+    iostreams
+    locale
+    log
+    math
+    mpi
+    graph_parallel # depends on mpi, so needs to be put after it
+    program_options
+    #python # complex module
+    random
+    regex
+    serialization
+    signals
+    system
+    test
+    thread
+    timer
+    type_erasure
+    wave
+  )
+endif()
 
 foreach(lib ${BOOST_LIBS_REQUIRED})
   include("libs/${lib}.cmake")
@@ -70,6 +73,7 @@ endforeach()
 foreach(lib ${BOOST_LIBS_OPTIONAL})
   # In case only a subset of modules is available (eg. after using bcp)
   if(EXISTS "${BOOST_SOURCE}/libs/${lib}")
+      message(STATUS "${lib}")
     include("libs/${lib}.cmake")
   endif()
 endforeach()
